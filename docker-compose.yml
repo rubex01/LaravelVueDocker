@@ -1,0 +1,65 @@
+version: "3.7"
+
+services:
+  # Vue
+  client-app:
+    build:
+      context: ./src/client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /app
+    container_name: client-app
+    volumes:
+      - ./src/client/app:/app
+    ports:
+      - "8080:8080"
+
+  # Laravel
+  server-app:
+    build:
+      args:
+        user: developer
+        uid: 1000
+      context: ./src/server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /var/www/
+    container_name: server-app
+    volumes:
+      - ./src/server/app:/var/www
+    networks:
+      - network
+
+  # Nginx Service
+  nginx:
+    image: nginx:1.21.6-alpine
+    restart: unless-stopped
+    container_name: nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src/server/app:/var/www/
+      - ./src/server/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - network
+
+  # MySQL service
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    container_name: database
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    volumes:
+      - ./src/server/db/data-volume:/var/lib/mysql
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
