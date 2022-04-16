@@ -4,7 +4,7 @@
 
 info: do-show-commands
 
-init: do-start do-composer-install do-yarn-install do-setup-laravel
+init: do-start do-composer-install do-yarn-install do-setup-laravel do-stop do-start
 restart: do-stop do-start
 start: do-start
 stop: do-stop
