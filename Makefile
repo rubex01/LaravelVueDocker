@@ -4,7 +4,7 @@
 
 info: do-show-commands
 
-init: do-start do-composer-install do-yarn-install do-setup-laravel do-stop do-start
+init: do-init do-composer-install do-yarn-install do-setup-laravel do-stop do-start
 restart: do-stop do-start
 start: do-start
 stop: do-stop
@@ -30,6 +30,12 @@ do-show-commands:
 	@echo "make client        Enter client(vue) app container shell"
 	@echo "make server        Enter server(laravel) app container shell"
 	@echo ""
+
+do-init:
+	@echo "\n=== Building and starting containers ===\n"
+	@${set-ids} docker-compose build
+	@${set-ids} docker-compose up -d
+	@echo "\n=== Containers build and running ready for setup ===\n"
 
 do-start:
 	@echo "\n=== Start app ===\n"
