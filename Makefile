@@ -21,6 +21,7 @@ set-ids = USERID=$$(id -u) GROUPID=$$(id -g)
 
 do-show-commands:
 	@echo "\n=== Make commands ===\n"
+	@echo "make init      	  Initialize the project (Run this after cloning the repo)"
 	@echo "make restart       Restart the app containers"
 	@echo "make start         Start the app containers"
 	@echo "make stop          Stop the app containers"
