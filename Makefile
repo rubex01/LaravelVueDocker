@@ -4,6 +4,7 @@
 
 info: do-show-commands
 
+init: do-start do-composer-install do-yarn-install do-setup-laravel
 restart: do-stop do-start
 start: do-start
 stop: do-stop
@@ -58,3 +59,7 @@ do-enter-client-shell:
 do-enter-server-shell:
 	@echo "\n=== Entering server shell ===\n"
 	@${set-ids} docker exec -it server-app sh
+
+do-setup-laravel:
+	@${set-ids} docker-compose run server-app cp .env.example .env
+	@${set-ids} docker-compose run server-app php artisan key:generate
